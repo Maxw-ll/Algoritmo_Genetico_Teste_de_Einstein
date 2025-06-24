@@ -74,19 +74,6 @@ class Individuo():
         return crs
     
 
-    def bits_to_string_bit(self, index_init) -> str:
-
-        bits_string_bit = ''
-
-        for i in range(3):
-            bits_string_bit += str(self.cromossomos[index_init])
-            index_init += 1
-
-        return bits_string_bit
-    
-    def bits_to_int(self, bits):
-        return int("".join(str(b) for b in bits), 2)
-
     def translate_to_string(self):
         print("-" * 75)
         print(f"{'CASA':<10} {'Cor':<10} {'Nacionalidade':<15} {'Bebida':<15} {'Cigarro':<15} {'Animal':<10}")
