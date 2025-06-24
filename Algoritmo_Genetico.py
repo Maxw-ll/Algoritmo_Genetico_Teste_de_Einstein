@@ -1,12 +1,11 @@
 from Individuo import Individuo
+import Constantes
 
 
-QUANTIDADE_INDIVIDUOS = 40
-
-Population = [Individuo() for i in range(QUANTIDADE_INDIVIDUOS)]
+Population = [Individuo() for i in range(Constantes.QUANTIDADE_INDIVIDUOS)]
 
 
 Population[0].translate_to_string()
 
-'''for i in range(QUANTIDADE_INDIVIDUOS):
-    print(Population[i].cromossomos)'''
+'''for i in range(5):
+    print(f"{Population[0].cromossomos[i*15: i*15 + 15]}\n")'''
