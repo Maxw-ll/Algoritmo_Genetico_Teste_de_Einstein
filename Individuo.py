@@ -4,9 +4,13 @@ import Constantes
 
 class Individuo():
 
-    def __init__(self):
+    def __init__(self, Cromossomos = None):
         self.quantidade_cromossomos: int = 75
-        self.cromossomos: list = self.Aleatory_DNA()
+        if Cromossomos != None:
+            self.cromossomos = Cromossomos
+        else:
+            self.cromossomos: list = self.Aleatory_DNA()
+
         self.resposta: dict = self.translate_resposta()
         self.pontuacao: int = self.fitness()
 
