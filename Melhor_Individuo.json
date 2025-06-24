@@ -1,0 +1,43 @@
+{
+    "bits": "000011010001011001001000000001011101000010010010101000000001000100000010010",
+    "resposta": {
+        "CASA 1": {
+            "Cor": "Amarela",
+            "Nacionalidade": "Norueguês",
+            "Bebida": "Chá",
+            "Cigarro": "Blue Master",
+            "Animal": "Pássaros"
+        },
+        "CASA 2": {
+            "Cor": "Azul",
+            "Nacionalidade": "Dinamarquês",
+            "Bebida": "Água",
+            "Cigarro": "Blends",
+            "Animal": "Cavalos"
+        },
+        "CASA 3": {
+            "Cor": "Verde",
+            "Nacionalidade": "None",
+            "Bebida": "Água",
+            "Cigarro": "Dunhill",
+            "Animal": "Gatos"
+        },
+        "CASA 4": {
+            "Cor": "Branca",
+            "Nacionalidade": "None",
+            "Bebida": "Água",
+            "Cigarro": "Blends",
+            "Animal": "Cavalos"
+        },
+        "CASA 5": {
+            "Cor": "Amarela",
+            "Nacionalidade": "Sueco",
+            "Bebida": "Água",
+            "Cigarro": "Dunhill",
+            "Animal": "Gatos"
+        }
+    },
+    "pontuacao": 33,
+    "individuo": 50078,
+    "Quantidade total gerada": 50118
+}

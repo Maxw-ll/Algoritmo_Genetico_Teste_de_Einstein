@@ -13,6 +13,7 @@ class Individuo():
 
         self.resposta: dict = self.translate_resposta()
         self.pontuacao: int = self.fitness()
+        self.id = None
 
     
     def Aleatory_DNA(self) -> list:
@@ -147,6 +148,14 @@ class Individuo():
             if (self.resposta[f'CASA {i}']['Cigarro'] == 'Blends' and self.resposta[f'CASA {i+1}']['Bebida'] == 'Água') or (self.resposta[f'CASA {i+1}']['Cigarro'] == 'Blends' and self.resposta[f'CASA {i}']['Bebida'] == 'Água'):
                 score += 3
 
+        #PUNIÇÃO SE TEM NONE  
+        for casa, atributos in self.resposta.items():
+            for atributo, valor in atributos.items():
+                if valor == "None":
+                    score -= 1
+                    if score < 0:  # Não deixar a pontuação negativa
+                        score = 0
+        self.pontuacao = score
         return score
 
 
