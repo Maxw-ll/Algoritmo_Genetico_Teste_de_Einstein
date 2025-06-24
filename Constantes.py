@@ -1,16 +1,13 @@
-
-
-
-QUANTIDADE_INDIVIDUOS = 40
+QUANTIDADE_INDIVIDUOS = 10000
 
 DICT_GENES: dict = {
     1: #Cores
     {
-        '000': "Amarelo",
+        '000': "Amarela",
         '001': "Azul",
-        '010': "Branco",
+        '010': "Branca",
         '011': "Verde",
-        '100': "Vermelho",
+        '100': "Vermelha",
         '101': "None",
         '110': "None",
         '111': "None"
