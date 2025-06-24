@@ -62,7 +62,7 @@ class Individuo():
             print(f"{atributo:<15} ", end="")  # Imprime o nome do atributo
             for i in range(1, 6):  # Para cada casa (de CASA #1 até CASA #5)
                 casa_atributos = self.resposta[f'CASA {i}']
-                print(f"{casa_atributos[atributo]:<15}", end="") 
+                print(f"{casa_atributos[atributo]:<16}", end="") 
             print()  
 
     def calculate_fitness(self):
