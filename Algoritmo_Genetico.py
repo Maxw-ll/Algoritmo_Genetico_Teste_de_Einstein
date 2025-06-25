@@ -94,6 +94,7 @@ class AlgoritmoGenetico:
                     
                 if individuo.fitness() >= self.limite_pontuacao:
                     print(f"Solução encontrada na geração {geracao}")
+                    individuo.translate_resposta()
                     return individuo, self.index_indiv  # Retorna o indivíduo com a solução ótima
             
             print(f"Melhor Individuo: {individuo.id} -- Geração {geracao} -- {max_pont} Pontos")
@@ -101,4 +102,5 @@ class AlgoritmoGenetico:
         # Caso não encontre solução, retorna o melhor indivíduo
         melhor_individuo = max(self.populacao, key=lambda x: x.fitness())
         print("Melhor solução encontrada após todas as gerações")
+        melhor_individuo.translate_resposta()
         return melhor_individuo, self.index_indiv
