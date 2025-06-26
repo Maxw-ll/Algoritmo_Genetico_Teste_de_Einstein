@@ -1,4 +1,5 @@
-from Algoritmo_Genetico import AlgoritmoGenetico
+#from Algoritmo_Genetico import AlgoritmoGenetico
+from Alg_Genetico_II import AlgoritmoGenetico
 from Individuo import Individuo
 import json
 import Constantes
@@ -23,6 +24,7 @@ def run_genetic():
 
     # Inicializa a população
     algoritmo_genetico.inicializar_populacao()
+    print("População Iniciada!")
 
     # Roda o algoritmo por 100 gerações
     begin = time.time()
@@ -36,12 +38,13 @@ def run_genetic():
         "pontuacao": melhor_individuo.pontuacao,
         "individuo": melhor_individuo.id, 
         "Quantidade total gerada": total_individuos,
+        "geracao": melhor_individuo.geracao,
         "Tempo Total": f"{(end-begin)/60} Minutos"
     }
 
     melhor_individuo.imprimir_resposta()
     # Salva o dicionário em um arquivo JSON
-    with open(f'Melhor_Individuo.json', 'w', encoding='utf-8') as f:
+    with open(f'Melhor_Individuo_Roleta_{melhor_individuo.geracao}.json', 'w', encoding='utf-8') as f:
         json.dump(best_individuo_dict, f, indent=4, ensure_ascii=False)
 
 

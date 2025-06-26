@@ -10,9 +10,12 @@ class AlgoritmoGenetico:
         self.n_melhores_to_crossover = n_crossover_melhores
         self.populacao = []
         self.index_indiv = 0
+        self.total_fitness = 0
+        self.roleta = []
+
 
     def inicializar_populacao(self):
-        """Cria a população inicial"""
+       
         self.populacao = []
         for _ in range(self.tamanho_populacao):
             individuo = Individuo() 
@@ -21,13 +24,13 @@ class AlgoritmoGenetico:
             self.populacao.append(individuo)
     
     def selecao_por_torneio(self):
-        """Seleciona dois indivíduos aleatoriamente e escolhe o melhor"""
+      
         torneio = random.sample(self.populacao, 2)
         torneio.sort(key=lambda x: x.fitness(), reverse=True)  # Ordena pela pontuação (fitness)
         return torneio[0]  # Retorna o melhor
 
     def crossover(self, pai1, pai2):
-        """Realiza o crossover de ponto único entre dois pais"""
+      
         if random.random() < self.taxa_crossover:
             ponto_crossover = random.randint(1, len(pai1.cromossomos) - 1)
             filho1 = pai1.cromossomos[:ponto_crossover] + pai2.cromossomos[ponto_crossover:]
@@ -41,9 +44,36 @@ class AlgoritmoGenetico:
             return f1, f2
         else:
             return pai1, pai2  # Se não ocorrer crossover, retorna os pais
+        
+    def calculate_fitness_population(self):
+        self.total_fitness = 0
+        self.total_fitness = sum(individuo.fitness() for individuo in self.populacao)
+        self.calculate_roleta()
 
+    def calculate_roleta(self):
+        self.roleta = []
+        probabilidade_acumulada = 0
+        
+        for individuo in self.populacao:
+            if self.total_fitness!= 0:
+                probabilidade = individuo.pontuacao / self.total_fitness
+                probabilidade_acumulada += probabilidade
+                self.roleta.append(probabilidade_acumulada)
+
+    def selecao_por_roleta(self):
+        pais_selecionados = []
+
+        while len(pais_selecionados) < self.n_melhores_to_crossover:
+            #print("Gerando pais")
+            sorteio = random.random()  # Gera um número aleatório entre 0 e 1
+            for i, probabilidade in enumerate(self.roleta):
+                if sorteio <= probabilidade:
+                    pais_selecionados.append(self.populacao[i])
+
+        return pais_selecionados
+            
     def mutacao(self, individuo):
-        """Aplica mutação no indivíduo com uma certa probabilidade"""
+      
         if random.random() < self.taxa_mutacao:
             ponto_aleatorio = random.randint(0,24)
             tipo_mutacao = random.randint(0,1)
@@ -60,40 +90,52 @@ class AlgoritmoGenetico:
                     else:
                         individuo.cromossomos[ponto_aleatorio * 3 + i] = 0
                         
-
-
-    def rodar_geracoes(self, num_geracoes):
-        """Executa o algoritmo genético por um número de gerações"""
-        for geracao in range(num_geracoes):
-            # Calcula o fitness de todos os indivíduos na população
-            for individuo in self.populacao:
-                individuo.fitness()
-
-            # Ordena a população pelos melhores fitness
-            self.populacao.sort(key=lambda x: x.fitness(), reverse=True)
-
-            # Remove os 100 piores indivíduos (os últimos após ordenação)
-            self.populacao = self.populacao[:self.tamanho_populacao - self.n_melhores_to_crossover]
-
-            # Vetor para armazenar os novos filhos
-            novos_filhos = []
-
-            # Geração de filhos a partir dos 100 melhores indivíduos
-            while len(novos_filhos) < self.n_melhores_to_crossover:  # Vamos gerar apenas 100 filhos
+    def selecao_por_torneio(self):
+        pais_selecionados = []
+        while len(pais_selecionados) < self.n_melhores_to_crossover:
                 # Seleciona dois indivíduos para o crossover
                 pai1 = random.choice(self.populacao)
                 pai2 = random.choice(self.populacao)
 
-                # Realiza o crossover
+                pais_selecionados.append(pai1)
+                pais_selecionados.append(pai2)
+        
+        return pais_selecionados
+    
+    def rodar_geracoes(self, num_geracoes):
+        
+        for geracao in range(num_geracoes):
+
+            print(len(self.populacao))
+
+            #Calcula o Fitness total necessario para a seleção por roleta e e já atualiza o fitness de cada individuo
+            self.calculate_fitness_population()
+
+            # Ordena a população pelos melhores fitness
+            self.populacao.sort(key=lambda x: x.pontuacao, reverse=True)
+
+            pais_selecionados = self.selecao_por_roleta()
+
+            # Vetor para armazenar os novos filhos
+            novos_filhos = []
+
+            # Geração de filhos a partir dos n pais selecionados 
+            for i in range(0, len(pais_selecionados) - 1, 2):
+                pai1 = pais_selecionados[i]
+                pai2 = pais_selecionados[i+1]
                 filho1, filho2 = self.crossover(pai1, pai2)
+                filho1.geracao = geracao
+                filho2.geracao = geracao
 
                 # Aplica a mutação
                 self.mutacao(filho1)
                 self.mutacao(filho2)
 
-                # Adiciona os filhos à lista de novos filhos
                 novos_filhos.append(filho1)
                 novos_filhos.append(filho2)
+
+            #REMOVE OS n piores    
+            self.populacao = self.populacao[:self.tamanho_populacao - self.n_melhores_to_crossover]
 
             # Adiciona os novos filhos à população
             self.populacao.extend(novos_filhos)
@@ -109,7 +151,7 @@ class AlgoritmoGenetico:
                 if individuo.fitness() >= self.limite_pontuacao:
                     print(f"Solução encontrada na geração {geracao}")
                     individuo.translate_resposta()
-                    return individuo, self.index_indiv  # Retorna o indivíduo com a solução ótima
+                    return individuo, self.index_indiv
             
             print(f"Melhor Individuo: {individuo.id} -- Geração {geracao} -- {max_pont} Pontos")
 

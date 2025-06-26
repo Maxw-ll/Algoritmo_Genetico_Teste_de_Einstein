@@ -14,6 +14,7 @@ class Individuo():
         self.resposta: dict = self.translate_resposta()
         self.pontuacao: int = self.fitness()
         self.id = None
+        self.geracao = 0
 
     
     def Aleatory_DNA(self) -> list:
