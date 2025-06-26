@@ -46,8 +46,21 @@ class AlgoritmoGenetico:
         """Aplica mutação no indivíduo com uma certa probabilidade"""
         if random.random() < self.taxa_mutacao:
             ponto_aleatorio = random.randint(0,24)
-            for i in range(3):
-                individuo.cromossomos[ponto_aleatorio * 3 + i] = 1 - individuo.cromossomos[ponto_aleatorio * 3 + i]  # Inverte o bit
+            tipo_mutacao = random.randint(0,1)
+            if tipo_mutacao == 1:
+                for i in range(3):
+                    #INVERTE
+                    individuo.cromossomos[ponto_aleatorio * 3 + i] = 1 - individuo.cromossomos[ponto_aleatorio * 3 + i]  # Inverte o bit
+            else:
+                #SOMA UMA UNIDADE
+                for i in range(2, -1, -1):
+                    if individuo.cromossomos[ponto_aleatorio * 3 + i] == 0:
+                        individuo.cromossomos[ponto_aleatorio * 3 + i] = 1
+                        break
+                    else:
+                        individuo.cromossomos[ponto_aleatorio * 3 + i] = 0
+                        
+
 
     def rodar_geracoes(self, num_geracoes):
         """Executa o algoritmo genético por um número de gerações"""
