@@ -1,5 +1,4 @@
-#from Algoritmo_Genetico import AlgoritmoGenetico
-from Alg_Genetico_II import AlgoritmoGenetico
+from Algoritmo_Genetico import AlgoritmoGenetico
 from Individuo import Individuo
 import json
 import Constantes
@@ -44,7 +43,7 @@ def run_genetic():
 
     melhor_individuo.imprimir_resposta()
     # Salva o dicionário em um arquivo JSON
-    with open(f'Melhor_Individuo_Roleta_{melhor_individuo.geracao}.json', 'w', encoding='utf-8') as f:
+    with open(f'Melhor_Individuo_Torneio_{melhor_individuo.geracao}.json', 'w', encoding='utf-8') as f:
         json.dump(best_individuo_dict, f, indent=4, ensure_ascii=False)
 
 

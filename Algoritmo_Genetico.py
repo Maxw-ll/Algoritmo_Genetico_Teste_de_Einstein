@@ -22,12 +22,6 @@ class AlgoritmoGenetico:
             individuo.id = self.index_indiv
             self.index_indiv += 1 # Supondo que você tenha uma classe Individuo para criar novos indivíduos
             self.populacao.append(individuo)
-    
-    def selecao_por_torneio(self):
-      
-        torneio = random.sample(self.populacao, 2)
-        torneio.sort(key=lambda x: x.fitness(), reverse=True)  # Ordena pela pontuação (fitness)
-        return torneio[0]  # Retorna o melhor
 
     def crossover(self, pai1, pai2):
       
@@ -69,7 +63,20 @@ class AlgoritmoGenetico:
             for i, probabilidade in enumerate(self.roleta):
                 if sorteio <= probabilidade:
                     pais_selecionados.append(self.populacao[i])
+                    break
 
+        return pais_selecionados
+    
+    def selecao_por_torneio(self):
+        pais_selecionados = []
+        while len(pais_selecionados) < self.n_melhores_to_crossover:
+                # Seleciona dois indivíduos para o crossover
+                pai1 = random.choice(self.populacao)
+                pai2 = random.choice(self.populacao)
+
+                pais_selecionados.append(pai1)
+                pais_selecionados.append(pai2)
+        
         return pais_selecionados
             
     def mutacao(self, individuo):
@@ -90,23 +97,13 @@ class AlgoritmoGenetico:
                     else:
                         individuo.cromossomos[ponto_aleatorio * 3 + i] = 0
                         
-    def selecao_por_torneio(self):
-        pais_selecionados = []
-        while len(pais_selecionados) < self.n_melhores_to_crossover:
-                # Seleciona dois indivíduos para o crossover
-                pai1 = random.choice(self.populacao)
-                pai2 = random.choice(self.populacao)
 
-                pais_selecionados.append(pai1)
-                pais_selecionados.append(pai2)
-        
-        return pais_selecionados
     
     def rodar_geracoes(self, num_geracoes):
         
         for geracao in range(num_geracoes):
 
-            print(len(self.populacao))
+            #print(len(self.populacao))
 
             #Calcula o Fitness total necessario para a seleção por roleta e e já atualiza o fitness de cada individuo
             self.calculate_fitness_population()
@@ -114,7 +111,7 @@ class AlgoritmoGenetico:
             # Ordena a população pelos melhores fitness
             self.populacao.sort(key=lambda x: x.pontuacao, reverse=True)
 
-            pais_selecionados = self.selecao_por_roleta()
+            pais_selecionados = self.selecao_por_torneio()
 
             # Vetor para armazenar os novos filhos
             novos_filhos = []
